@@ -1,0 +1,18 @@
+# Binary dosyalar
+main
+*.exe
+
+# Bağımlılıklar
+vendor/
+
+# Ortam değişkenleri ve veritabanı
+.env
+*.db
+*.log
+
+# Swagger dökümanları (İstersen gönderebilirsin ama genelde otomatik üretilir)
+# docs/
+
+# IDE dosyaları
+.vscode/
+.idea/
