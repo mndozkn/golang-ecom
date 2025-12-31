@@ -10,20 +10,13 @@ import (
 	"go-crud/pkg/database"
 	"log"
 
+	_ "go-crud/docs"
+
 	"github.com/gofiber/fiber/v2"
 )
 
 // @title Go E-Commerce Backend API
 // @version 1.0
-// @description Fiber tabanlı profesyonel e-ticaret API dokümantasyonu.
-// @termsOfService http://swagger.io/terms/
-
-// @contact.name API Destek
-// @contact.url http://www.example.com/support
-// @contact.email support@example.com
-
-// @license.name Apache 2.0
-// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
 // @host localhost:3000
 // @BasePath /api/v1

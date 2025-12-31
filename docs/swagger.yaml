@@ -1,0 +1,197 @@
+basePath: /api/v1
+definitions:
+  domain.Category:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      products:
+        items:
+          $ref: '#/definitions/domain.Product'
+        type: array
+      slug:
+        description: 'ornek: "elektronik-cihazlar"'
+        type: string
+    type: object
+  domain.Order:
+    properties:
+      created_at:
+        type: string
+      id:
+        example: 100
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/domain.OrderItem'
+        type: array
+      status:
+        allOf:
+        - $ref: '#/definitions/domain.OrderStatus'
+        enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        example: 0
+      total_amount:
+        example: 1500.5
+        type: number
+      user_id:
+        example: 5
+        type: integer
+    type: object
+  domain.OrderItem:
+    properties:
+      id:
+        type: integer
+      order_id:
+        type: integer
+      price:
+        type: number
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+      seller_id:
+        type: integer
+    type: object
+  domain.OrderStatus:
+    description: 'Sipariş durumları: 0:Pending, 1:Shipped, 2:Delivered, 3:Cancelled'
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    type: integer
+    x-enum-comments:
+      StatusCancelled: '3: İptal Edildi'
+      StatusDelivered: '2: Teslim Edildi'
+      StatusPending: '0: Beklemede'
+      StatusShipped: '1: Kargolandı'
+    x-enum-descriptions:
+    - '0: Beklemede'
+    - '1: Kargolandı'
+    - '2: Teslim Edildi'
+    - '3: İptal Edildi'
+    x-enum-varnames:
+    - StatusPending
+    - StatusShipped
+    - StatusDelivered
+    - StatusCancelled
+  domain.Product:
+    properties:
+      category:
+        $ref: '#/definitions/domain.Category'
+      category_id:
+        example: 2
+        type: integer
+      created_at:
+        example: "2025-01-01T00:00:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: Oyuncu Faresi
+        type: string
+      price:
+        example: 750
+        type: number
+      seller_id:
+        example: 10
+        type: integer
+      stock:
+        example: 50
+        type: integer
+      updated_at:
+        example: "2025-01-01T00:00:00Z"
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  title: Go E-Commerce Backend API
+  version: "1.0"
+paths:
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 'message: Başarıyla kayıt olundu'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Yeni kullanıcı kaydı
+      tags:
+      - Auth
+  /products:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Ürün adı arama
+        in: query
+        name: name
+        type: string
+      - description: Minimum fiyat
+        in: query
+        name: min_price
+        type: number
+      - description: Maximum fiyat
+        in: query
+        name: max_price
+        type: number
+      - description: Sayfa no
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Product'
+            type: array
+      summary: Ürünleri listele ve filtrele
+      tags:
+      - Products
+  /user/orders:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Sipariş verilecek ürünler
+        in: body
+        name: items
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/domain.OrderItem'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.Order'
+      security:
+      - ApiKeyAuth: []
+      summary: Yeni sipariş oluştur
+      tags:
+      - Orders
+securityDefinitions:
+  ApiKeyAuth:
+    description: 'JWT tokenınızı şu formatta girin: Bearer <token>'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -1,9 +1,10 @@
 package http
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"go-crud/internal/domain"
 	"go-crud/pkg/utils"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 type AuthHandler struct {
@@ -27,7 +28,6 @@ type RegisterReq struct {
 // @Tags Auth
 // @Accept json
 // @Produce json
-// @Param body body struct{Email string `json:"email"`; Password string `json:"password"`} true "Kayıt Bilgileri"
 // @Success 201 {object} map[string]string "message: Başarıyla kayıt olundu"
 // @Router /auth/register [post]
 func (h *AuthHandler) Register(c *fiber.Ctx) error {
