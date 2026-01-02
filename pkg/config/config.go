@@ -16,19 +16,19 @@ type Config struct {
 
 func LoadConfig() *Config {
 	return &Config{
-		DBHost:     getEnv("DB_HOST", "db"),
-		DBPort:     getEnv("DB_PORT", "5432"),
-		DBUser:     getEnv("DB_USER", "postgres"),
-		DBPassword: getEnv("DB_PASSWORD", "password"),
-		DBName:     getEnv("DB_NAME", "ecommerce"),
-		JWTSecret:  getEnv("JWT_SECRET", "gizli-key"),
-		ServerPort: getEnv("SERVER_PORT", "8080"),
+		DBHost:     getEnv("DB_HOST"),
+		DBPort:     getEnv("DB_PORT"),
+		DBUser:     getEnv("DB_USER"),
+		DBPassword: getEnv("DB_PASSWORD"),
+		DBName:     getEnv("DB_NAME"),
+		JWTSecret:  getEnv("JWT_SECRET"),
+		ServerPort: getEnv("SERVER_PORT"),
 	}
 }
 
-func getEnv(key, defaultValue string) string {
+func getEnv(key string) string {
 	if value, exists := os.LookupEnv(key); exists {
 		return value
 	}
-	return defaultValue
+	return ""
 }
