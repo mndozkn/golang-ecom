@@ -2,26 +2,44 @@ package http
 
 import (
 	"go-crud/internal/delivery/http/middleware"
-	"go-crud/internal/domain"
-	
+	"go-crud/internal/repository"
+	"go-crud/internal/service"
+	"go-crud/internal/worker"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/swagger"
+	"github.com/redis/go-redis/v9"
+	"gorm.io/gorm"
 )
 
-func SetupRoutes(app *fiber.App, ps domain.ProductService, as domain.AuthService, os domain.OrderService, cs domain.CategoryService, jwtSecret string) {
+func SetupRoutes(app *fiber.App, jwtSecret string, db *gorm.DB, redisClient *redis.Client, distributor worker.TaskDistributor) {
 	api := app.Group("/api/v1")
 
+	// Repositories
+	catRepo := repository.NewCategoryRepository(db)
+	productRepo := repository.NewProductRepository(db)
+	userRepo := repository.NewUserRepository(db)
+	orderRepo := repository.NewOrderRepository(db)
+
+	// Services
+	catService := service.NewCategoryService(catRepo)
+	productService := service.NewProductService(productRepo)
+	authService := service.NewAuthService(userRepo, redisClient, jwtSecret, distributor)
+	orderService := service.NewOrderService(orderRepo, productRepo)
+	userService := service.NewUserService(userRepo)
+
 	// Handler Init
-	productHandler := &ProductHandler{Service: ps}
-	authHandler := &AuthHandler{Service: as}
-	orderHandler := &OrderHandler{Service: os}
-	categoryHandler := &CategoryHandler{Service: cs}
-	userHandler := &UserHandler{}
+	productHandler := &ProductHandler{Service: productService}
+	authHandler := &AuthHandler{Service: authService}
+	orderHandler := &OrderHandler{Service: orderService}
+	categoryHandler := &CategoryHandler{Service: catService}
+	userHandler := &UserHandler{Service: userService}
 	adminHandler := &AdminHandler{}
 
 	auth := api.Group("/auth")
 	auth.Post("/register", authHandler.Register)
 	auth.Post("/login", authHandler.Login)
+	auth.Post("/refresh", authHandler.Refresh)
 
 	api.Get("/products", productHandler.GetAll)
 	api.Get("/categories", categoryHandler.GetAll)
@@ -30,6 +48,7 @@ func SetupRoutes(app *fiber.App, ps domain.ProductService, as domain.AuthService
 	userArea.Get("/profile", func(c *fiber.Ctx) error { return c.SendString("Profil") })
 	userArea.Get("/orders", orderHandler.GetMyOrders)
 	userArea.Post("/orders/:id/cancel", orderHandler.CancelOrder)
+	userArea.Put("/change-password", userHandler.ChangePassword)
 
 	sellerArea := api.Group("/seller", middleware.Protected(jwtSecret), middleware.RoleCheck("seller"))
 	sellerArea.Post("/products", productHandler.Create)

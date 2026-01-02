@@ -25,4 +25,12 @@ type User struct {
 type UserRepository interface {
 	Create(ctx context.Context, user *User) error
 	GetByEmail(ctx context.Context, email string) (*User, error)
+	GetByID(ctx context.Context, id uint) (*User, error)
+	UpdatePassword(ctx context.Context, id uint, hash string) error
+}
+
+type PasswordChangeRequest struct {
+	OldPassword     string `json:"old_password" validate:"required"`
+	NewPassword     string `json:"new_password" validate:"required,min=6"`
+	ConfirmPassword string `json:"confirm_password" validate:"required,eqfield=NewPassword"`
 }
