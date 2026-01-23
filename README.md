@@ -54,6 +54,6 @@ Proje, bağımlılıkların yönetimi için katmanlı mimari (Clean Architecture
 - JWT: Kullanıcı login işlemleri sonrası verilen token ile yetkilendirme sağlanır.
 - RBAC (Role Based Access Control): Admin, Seller ve Buyer rolleri için özel middleware kontrolleri (RoleCheck) uygulanmaktadır.
 
-## 📡 API Dokümantasyonu
+## API Dokümantasyonu
 Uygulama çalıştıktan sonra aşağıdaki adresten interaktif Swagger dokümantasyonuna erişebilirsiniz:
-👉 http://localhost:8080/swagger/index.html
+http://localhost:8080/swagger/index.html
