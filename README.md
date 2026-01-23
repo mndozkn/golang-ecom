@@ -1,8 +1,8 @@
-# 🚀 Go E-Commerce API (Fiber)
+# Go E-Commerce API (Fiber)
 
 Bu proje, **Go Fiber** framework'ü ve **Clean Architecture** prensipleriyle geliştirilmiş, Docker desteğine sahip profesyonel bir e-ticaret backend çözümüdür. Ölçeklenebilir, test edilebilir ve modern standartlara uygun bir yapı sunar.
 
-## 🛠 Teknolojik Stack
+## Teknolojik Stack
 - **Dil:** Go 1.24
 - **Framework:** Fiber v2
 - **ORM:** GORM
@@ -11,7 +11,7 @@ Bu proje, **Go Fiber** framework'ü ve **Clean Architecture** prensipleriyle gel
 - **Konteynerleştirme:** Docker & Docker Compose
 - **Dokümantasyon:** Swagger (OpenAPI 3.0)
 
-## 🚀 Çalıştırma Talimatları
+## Çalıştırma Talimatları
 
 ### A. Docker ile Çalıştırma (Tavsiye Edilen)
 Projeyi tüm bağımlılıkları ve veritabanı ile birlikte ayağa kaldırmak için:
@@ -22,7 +22,7 @@ Eğer yerel makinenizde Go yüklüyse:
 1. **go mod tidy**
 2. **go run cmd/api/main.go**
 
-## 📜 Makefile Komutları
+## Makefile Komutları
 Geliştirme sürecini yönetmek için aşağıdaki kısa yolları kullanabilirsiniz:
 - **make up**: Konteynerleri build eder ve arka planda başlatır.
 - **make down**: Konteynerleri durdurur ve tüm kaynakları siler.
@@ -30,7 +30,7 @@ Geliştirme sürecini yönetmek için aşağıdaki kısa yolları kullanabilirsi
 - **make logs**: Uygulama loglarını (Zap) canlı olarak izler.
 - **make test**: Projedeki tüm birim (unit) testlerini çalıştırır.
 
-## 📁 Proje Yapısı
+## Proje Yapısı
 Proje, bağımlılıkların yönetimi için katmanlı mimari (Clean Architecture) kullanmaktadır:
 
 ```text
@@ -50,7 +50,7 @@ Proje, bağımlılıkların yönetimi için katmanlı mimari (Clean Architecture
 └── .air.toml           # Air (Hot-reload) yapılandırması
 ```
 
-## 🔒 Güvenlik ve Yetkilendirme
+## Güvenlik ve Yetkilendirme
 - JWT: Kullanıcı login işlemleri sonrası verilen token ile yetkilendirme sağlanır.
 - RBAC (Role Based Access Control): Admin, Seller ve Buyer rolleri için özel middleware kontrolleri (RoleCheck) uygulanmaktadır.
 
